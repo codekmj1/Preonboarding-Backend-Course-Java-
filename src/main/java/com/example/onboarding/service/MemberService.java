@@ -11,7 +11,7 @@ import com.example.onboarding.dto.request.LoginRequest;
 import com.example.onboarding.dto.request.SignupRequest;
 import com.example.onboarding.dto.response.AuthorityResponse;
 import com.example.onboarding.dto.response.LoginResponse;
-import com.example.onboarding.dto.response.MemberResponse;
+import com.example.onboarding.dto.response.SignupResponse;
 import com.example.onboarding.model.Authority;
 import com.example.onboarding.model.Member;
 import com.example.onboarding.repository.MemberRepository;
@@ -36,7 +36,7 @@ public class MemberService {
         return new LoginResponse(token);
     }
 
-    public MemberResponse register(SignupRequest request) throws Exception {
+    public SignupResponse register(SignupRequest request) throws Exception {
         if (memberRepository.findByUsername(request.getUsername()).isPresent()) {
             throw new Exception("이미 존재하는 사용자입니다.");
         }
@@ -48,7 +48,7 @@ public class MemberService {
                     .roles(Collections.singletonList(Authority.builder().name("ROLE_USER").build()))
                     .build();
             memberRepository.save(member);
-            return MemberResponse.builder()
+            return SignupResponse.builder()
                     .username(member.getUsername())
                     .nickname(member.getNickname())
                     .authorities(Collections.singletonList(new AuthorityResponse("ROLE_USER"))) 

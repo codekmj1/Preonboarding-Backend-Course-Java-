@@ -7,8 +7,8 @@ import lombok.Getter;
 
 @Getter
 @Builder
-public class MemberResponse {
+public class SignupResponse {
     private String username;
     private String nickname;
-    private List<AuthorityResponse> authorities; 
+    private List<AuthorityResponse> authorities; 	
 }

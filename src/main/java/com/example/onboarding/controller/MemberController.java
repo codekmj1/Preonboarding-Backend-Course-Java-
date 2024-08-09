@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.example.onboarding.dto.request.LoginRequest;
 import com.example.onboarding.dto.request.SignupRequest;
 import com.example.onboarding.dto.response.LoginResponse;
-import com.example.onboarding.dto.response.MemberResponse;
+import com.example.onboarding.dto.response.SignupResponse;
 import com.example.onboarding.service.MemberService;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -53,15 +53,15 @@ public class MemberController {
     @Operation(summary = "회원 가입", description = "새로운 사용자를 등록합니다.")
     @ApiResponses(value = {
         @ApiResponse(responseCode = "200", description = "회원 가입 성공", content = {
-            @Content(mediaType = "application/json", schema = @Schema(implementation = MemberResponse.class))
+            @Content(mediaType = "application/json", schema = @Schema(implementation = SignupResponse.class))
         }),
         @ApiResponse(responseCode = "400", description = "잘못된 요청", content = @Content)
     })
     @PostMapping("/signup")
-    public ResponseEntity<MemberResponse> signup(@RequestBody SignupRequest request) {
+    public ResponseEntity<SignupResponse> signup(@RequestBody SignupRequest request) {
         try {
-            MemberResponse memberResponse = memberService.register(request);
-            return new ResponseEntity<>(memberResponse, HttpStatus.CREATED); // 성공 시 201 응답 코드 사용
+            SignupResponse signupResponse = memberService.register(request);
+            return new ResponseEntity<>(signupResponse, HttpStatus.CREATED); // 성공 시 201 응답 코드 사용
         } catch (Exception e) {
             // 예외 처리 로깅
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
