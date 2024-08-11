@@ -46,10 +46,8 @@ public class MemberControllerTest {
     @BeforeEach
     void setUp() {
     	memberRepository.deleteAll();
-    	
         Authority authority = Authority.builder().name("ROLE_USER").build();
         String encodedPassword = passwordEncoder.encode("password");
-        
         Member member = Member.builder()
                 .username("asd")
                 .password(encodedPassword)
@@ -64,13 +62,8 @@ public class MemberControllerTest {
         LoginRequest request = new LoginRequest();
         request.setUsername("asd");
         request.setPassword("password");
-
-        // LoginResponse 객체 생성
         LoginResponse response = new LoginResponse("mock-token");
-
-        // Mocking
         when(memberService.login(any(LoginRequest.class))).thenReturn(response);
-
         ResultActions resultActions = mockMvc.perform(post("/user/login")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("{\"username\":\"asd\", \"password\":\"password\"}"))
@@ -85,17 +78,12 @@ public class MemberControllerTest {
         request.setUsername("qwe");
         request.setPassword("123");
         request.setNickname("qwee");
-
-        // SignupResponse 객체 생성
         SignupResponse response = SignupResponse.builder()
                 .username("qwe")
                 .nickname("qwee")
                 .authorities(Collections.emptyList())
                 .build();
-
-        // Mocking
         when(memberService.register(any(SignupRequest.class))).thenReturn(response);
-
         ResultActions resultActions = mockMvc.perform(post("/user/signup")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("{\"username\":\"qwe\", \"password\":\"123\", \"nickname\":\"qwee\"}"))

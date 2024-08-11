@@ -52,11 +52,9 @@ public class MemberServiceTest {
     @DisplayName("로그인 성공 테스트")
     public void testLogin_Success() throws Exception {
         LoginRequest request = new LoginRequest("testUser", "plainPassword");
-        
         when(memberRepository.findByUsername("testUser")).thenReturn(Optional.of(member));
         when(passwordEncoder.matches("plainPassword", "encodedPassword")).thenReturn(true);
         when(jwtProvider.createToken("testUser", member.getRoles())).thenReturn("token");
-
         LoginResponse response = memberService.login(request);
         System.out.println("Login Success: " + response.getToken());
         assertEquals("token", response.getToken());
@@ -66,10 +64,8 @@ public class MemberServiceTest {
     @DisplayName("로그인 실패 테스트")
     public void testLogin_Failure_BadCredentials() {
         LoginRequest request = new LoginRequest("testUser", "wrongPassword");
-
         when(memberRepository.findByUsername("testUser")).thenReturn(Optional.of(member));
         when(passwordEncoder.matches("wrongPassword", "encodedPassword")).thenReturn(false);
-        
         Exception exception = assertThrows(BadCredentialsException.class, () -> memberService.login(request));
         System.out.println("Login Failure: " + exception.getMessage()); 
     }
@@ -78,10 +74,8 @@ public class MemberServiceTest {
     @DisplayName("회원가입 성공 테스트")
     public void testRegister_Success() throws Exception {
         SignupRequest request = new SignupRequest(1L, "newUser", "plainPassword", "New User");
-
         when(memberRepository.findByUsername("newUser")).thenReturn(Optional.empty());
         when(passwordEncoder.encode("plainPassword")).thenReturn("encodedPassword");
-
         SignupResponse response = memberService.register(request);
         System.out.println("Register Success: " + response.getUsername() + ", " + response.getNickname());
         assertEquals("newUser", response.getUsername());
@@ -92,7 +86,6 @@ public class MemberServiceTest {
     @DisplayName("회원가입 실패 테스트")
     public void testRegister_Failure_UserAlreadyExists() {
         SignupRequest request = new SignupRequest(1L ,"testUser", "plainPassword", "Test User");
-
         when(memberRepository.findByUsername("testUser")).thenReturn(Optional.of(member));
         Exception exception = assertThrows(Exception.class, () -> memberService.register(request));
         System.out.println("Register Failure: " + exception.getMessage());

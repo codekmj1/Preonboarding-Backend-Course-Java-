@@ -9,5 +9,4 @@ import com.example.onboarding.model.Member;
 
 public interface MemberRepository extends JpaRepository<Member, Long>{
 	Optional<Member> findByUsername(String username);
-
 }
