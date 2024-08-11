@@ -38,10 +38,14 @@ public class JwtProvider {
     protected void init() {
         secretKey = Keys.hmacShaKeyFor(salt.getBytes(StandardCharsets.UTF_8));
     }
-
+    public void setSalt(String salt) {
+        this.salt = salt;
+    }
     public String createToken(String username, List<Authority> roles) {
         Claims claims = Jwts.claims().setSubject(username);
+        System.out.println("1 username:"+username);
         claims.put("roles", roles);
+        System.out.println("2 roles:"+username);
         Date now = new Date();
         return Jwts.builder()
                 .setClaims(claims)
